@@ -7,3 +7,10 @@ export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:/home/workspace/project1/build
 roslaunch my_robot world.launch
 roslaunch ball_chaser ball_chaser.launch
 
+# Project 3
+---
+rostopic info/list/echo
+roslaunch my_robot world.launch
+roslaunch my_robot amcl.launch
+rosrun teleop_twist_keyboard teleop_twist_keyboard.py
+
