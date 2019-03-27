@@ -84,7 +84,7 @@
     <state world_name='default'>
       <sim_time>37 719000000</sim_time>
       <real_time>38 104878014</real_time>
-      <wall_time>1553718493 6927292</wall_time>
+      <wall_time>1553718521 90031412</wall_time>
       <iterations>37719</iterations>
       <model name='Warehouse-robot'>
         <pose frame=''>1.80485 -1.91181 0 0 -0 0</pose>
