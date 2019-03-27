@@ -36,7 +36,8 @@
 
       <!-- Loop Closure Detection -->
       <!-- 0=SURF 1=SIFT 2=ORB 3=FAST/FREAK 4=FAST/BRIEF 5=GFTT/FREAK 6=GFTT/BRIEF 7=BRISK 8=GFTT/ORB 9=KAZE -->
-      <param name="Kp/DetectorStrategy" type="string" value="1"/>
+      <param name="Kp/DetectorStrategy" type="string" value="0"/>
+      <param name="SURF/HessianThreshold" type="string" value="100"/>
 
       <!-- Maximum visual words per image (bag-of-words) -->
       <param name="Kp/MaxFeatures" type="string" value="400"/>
@@ -47,7 +48,7 @@
       <param name="Reg/Force3DoF" type="string" value="true"/>
 
       <!-- Minimum visual inliers to accept loop closure -->
-      <param name="Vis/MinInliers" type="string" value="30"/>
+      <param name="Vis/MinInliers" type="string" value="5"/>
 
       <!-- Set to false to avoid saving data when robot is not moving -->
       <param name="Mem/NotLinkedNodesKept" type="string" value="false"/>
