@@ -144,12 +144,12 @@
 
   <joint type="fixed" name="camera_joint">
     <origin xyz="0.2 0 0" rpy="0 0 0"/>
-    <child link="camera"/>
+    <child link="camera_link"/>
     <parent link="chassis"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
   </joint>
 
-  <link name="camera">
+  <link name="camera_link">
       <collision name='camera_collision'>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
@@ -199,6 +199,16 @@
       <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
     </inertial>
   </link>
+
+  <joint name="camera_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.5707 0 -1.5707"/>
+    <parent link="camera_link"/>
+    <child link="camera_link_optical"/>
+  </joint>
+
+  <link name="camera_link_optical">
+  </link>
+
   <gazebo reference="left_wheel">
     <material>Gazebo/Green</material>
   </gazebo>
