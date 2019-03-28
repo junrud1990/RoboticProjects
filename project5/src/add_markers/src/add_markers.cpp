@@ -31,8 +31,7 @@
 // %Tag(INCLUDES)%
 #include <ros/ros.h>
 #include <visualization_msgs/Marker.h>
-#include <nav_msgs/Odometry.h>
-
+#include <std_msgs/Bool.h>
 const double pick_xyw[3] = {-4.0, 0.5, 1};
 const double drop_xyw[3] = {3.0, -2.5, 1};
 bool pickup = true;
@@ -93,10 +92,9 @@ double sqrt_dist(const double x[2], const double y[2])
   return sqrt((x[0]-y[0])*(x[0]-y[0]) + (x[1]-y[1])*(x[1]-y[1]));
 }
 
-void poseCallback(const nav_msgs::Odometry::ConstPtr& msg){
-  double xy[2] = {msg->pose.pose.position.x, msg->pose.pose.position.y};
+void reachedCallback(const std_msgs::Bool::ConstPtr& Reached) {
   if(pickup) {
-    if(sqrt_dist(xy, pick_xyw) < 0.01) {
+    if(Reached) {
       // pickup is done;
       pickup = false;
       // delete marker
@@ -105,9 +103,10 @@ void poseCallback(const nav_msgs::Odometry::ConstPtr& msg){
       // add new drop off zone marker
       edit_marker(&marker, drop_xyw, red);
       marker_pub.publish(marker);
+      ROS_INFO("Reach pickup zone");
     }
   } else {
-    if(sqrt_dist(xy, drop_xyw) < 0.01) {
+    if(Reached) {
       // dropoff is done;
       pickup = true;
       // delete marker
@@ -116,10 +115,9 @@ void poseCallback(const nav_msgs::Odometry::ConstPtr& msg){
       // add new drop off zone marker
       edit_marker(&marker, pick_xyw, green);
       marker_pub.publish(marker);
+      ROS_INFO("Reach drop off zone");
     }
   }
-	//ROS_INFO("Seq: [%d]", msg->header.seq);
-	//ROS_INFO("Position-> x: [%f], y: [%f]", msg->pose.pose.position.x,msg->pose.pose.position.y);
 }
 
 int main( int argc, char** argv )
@@ -134,6 +132,6 @@ int main( int argc, char** argv )
   edit_marker(&marker, pick_xyw, green);
   marker_pub.publish(marker);
   ROS_INFO("publish markers!");
-  ros::Subscriber sub = n.subscribe("/odom",1000, poseCallback);
+  ros::Subscriber sub = n.subscribe("/PoseReached",1000, reachedCallback);
   ros::spin();
 }
