@@ -18,9 +18,8 @@ int main(int argc, char** argv){
   }
 
   move_base_msgs::MoveBaseGoal goal;
-  double pick_xyw[3] = {1.0, 0, 0};
-
-  double drop_xyw[3] = {3.0, 0, 0};
+  double pick_xyw[3] = {-4.0, 0.5, 1};
+  double drop_xyw[3] = {3.0, -2.5, 1};
 
   {
     // set up the frame parameters
