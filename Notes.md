@@ -20,3 +20,8 @@ roslaunch my_robot world.launch
 roslaunch my_robot mapping.launch
 roslaunch my_robot teleop.launch
 rtabmap-databaseViewer ~/.ros/rtabmap.db
+
+# Project 5
+---
+sudo apt-get install ros-kinetic-turtlebot
+sudo apt-get install ros-kinetic-gmapping
