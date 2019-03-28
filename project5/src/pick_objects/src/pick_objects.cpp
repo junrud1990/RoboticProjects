@@ -10,7 +10,7 @@ int main(int argc, char** argv){
   ros::init(argc, argv, "simple_navigation_goals");
 
   //tell the action client that we want to spin a thread by default
-  MoveBaseClient ac("pick_objects", true);
+  MoveBaseClient ac("move_base", true);
 
   // Wait 5 sec for move_base action server to come up
   while(!ac.waitForServer(ros::Duration(5.0))){
@@ -18,27 +18,55 @@ int main(int argc, char** argv){
   }
 
   move_base_msgs::MoveBaseGoal goal;
+  double pick_xyw[3] = {1.0, 0, 0};
 
-  // set up the frame parameters
-  goal.target_pose.header.frame_id = "map";
-  goal.target_pose.header.stamp = ros::Time::now();
+  double drop_xyw[3] = {3.0, 0, 0};
 
-  // Define a position and orientation for the robot to reach
-  goal.target_pose.pose.position.x = 1.0;
-  goal.target_pose.pose.orientation.w = 1.0;
+  {
+    // set up the frame parameters
+    goal.target_pose.header.frame_id = "map";
+    goal.target_pose.header.stamp = ros::Time::now();
 
-   // Send the goal position and orientation for the robot to reach
-  ROS_INFO("Sending goal");
-  ac.sendGoal(goal);
+    // Define a position and orientation for the robot to reach
+    goal.target_pose.pose.position.x = pick_xyw[0];
+    goal.target_pose.pose.position.y = pick_xyw[1];
+    goal.target_pose.pose.orientation.w = pick_xyw[2];
 
-  // Wait an infinite time for the results
-  ac.waitForResult();
+    // Send the goal position and orientation for the robot to reach
+    ROS_INFO("Sending pickup zone goal");
+    ac.sendGoal(goal);
 
-  // Check if the robot reached its goal
-  if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
-    ROS_INFO("Hooray, the base moved 1 meter forward");
-  else
-    ROS_INFO("The base failed to move forward 1 meter for some reason");
+    // Wait an infinite time for the results
+    ac.waitForResult();
 
+    // Check if the robot reached its goal
+    if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
+      ROS_INFO("Reach pickup zone");
+    else
+      ROS_INFO("Fail to reach pickup zone");
+  }
+  ros::Duration(5).sleep();
+  {
+    goal.target_pose.header.frame_id = "map";
+    goal.target_pose.header.stamp = ros::Time::now();
+
+    // Define a position and orientation for the robot to reach
+    goal.target_pose.pose.position.x = drop_xyw[0];
+    goal.target_pose.pose.position.y = drop_xyw[1];
+    goal.target_pose.pose.orientation.w = drop_xyw[2];
+
+    // Send the goal position and orientation for the robot to reach
+    ROS_INFO("Sending drop off zone goal");
+    ac.sendGoal(goal);
+
+    // Wait an infinite time for the results
+    ac.waitForResult();
+
+    // Check if the robot reached its goal
+    if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
+      ROS_INFO("Reach drop off zone");
+    else
+      ROS_INFO("Fail to reach drop off zone");
+  }
   return 0;
 }
